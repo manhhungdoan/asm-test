@@ -66,6 +66,7 @@
                     border-radius: 8px 8px 8px 0px;
                     color: rgb(255, 255, 255);
                     margin-bottom: 1rem;
+                    margin-top: 6px;
                 }
             }
 
@@ -79,6 +80,8 @@
             align-items: flex-end;
 
             .sender-message {
+                margin-top: 6px;
+                margin-bottom: 1rem;
                 width: fit-content;
                 block-size: fit-content;
                 padding: 5px 10px;

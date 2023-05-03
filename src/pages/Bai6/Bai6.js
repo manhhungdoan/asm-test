@@ -10,8 +10,8 @@ const Bai6 = () => {
 
     const [data, setData] = useState({})
     const [visible, setVisible] = useState(false);
-    const [color, setColor] = useState('Space black')
-    const [capacity, setCapacity] = useState('128GB')
+    const [color, setColor] = useState(0)
+    const [capacity, setCapacity] = useState(0)
     const [qty, setQty] = useState(1)
     const [imageSelected, setImageSelected] = useState('')
 
@@ -25,7 +25,7 @@ const Bai6 = () => {
             let image
                 = value.map((item => {
                     return {
-                        color: (item.name.split(',')[0]).split(':')[1].substring(1).toLowerCase(),
+                        color: (item.index.split(',')[0]),
                         src: item.imageId
                     }
                 }))
@@ -36,20 +36,20 @@ const Bai6 = () => {
         )
         .value()
 
-    console.log(productImages)
+    console.log("product image", productImages)
     const getImage = (color) => {
         productImages.map((item) => {
 
-            if (item.image.color.toUpperCase() == color.toUpperCase()) {
+            if (item.image.color == color) {
                 setImageSelected(item.image.src)
             }
         })
     }
 
     const getData = (color, capacity) => {
-        let params = `color: ${color}, capacity: ${capacity}`
+        let params = `${color},${capacity}`
         product.variants.map((item) => {
-            if (item.name.replace(/\s+/g, '').toUpperCase() == params.replace(/\s+/g, '').toUpperCase()) {
+            if (item.index == params) {
                 setData(item)
             }
         })
@@ -62,6 +62,8 @@ const Bai6 = () => {
     useEffect(() => {
         getData(color, capacity)
     }, [color, capacity])
+    console.log("capacity", capacity)
+    console.log("color", color)
 
     return (
         <div
@@ -188,14 +190,17 @@ const Bai6 = () => {
                                 <Col span={5} className='product-color-title'>Color</Col>
                                 <Col span={19}>
                                     <Radio.Group
-                                        defaultValue={color}
-                                        onChange={(event) => setColor((event.target.value))}
+                                        defaultValue={product.optionValues[0].value[0]}
                                     >
                                         <Space>
                                             {
-                                                product.optionValues[0].value.map((item) => {
+                                                product.optionValues[0].value.map((item, index) => {
                                                     return (
-                                                        <Radio.Button value={item}>{item}</Radio.Button>
+                                                        <Radio.Button
+                                                            value={item}
+                                                            onClick={() => setColor(index)}
+                                                        >{item}
+                                                        </Radio.Button>
                                                     )
                                                 })
                                             }
@@ -207,12 +212,12 @@ const Bai6 = () => {
                             <Row className='product-select capacity'>
                                 <Col span={5} className='product-capacity-title'>Capacity</Col>
                                 <Col span={19}>
-                                    <Radio.Group defaultValue={capacity} onChange={(event) => setCapacity(event.target.value)}>
+                                    <Radio.Group defaultValue={product.optionValues[1].value[0]}>
                                         <Space>
                                             {
-                                                product.optionValues[1].value.map((item) => {
+                                                product.optionValues[1].value.map((item, index) => {
                                                     return (
-                                                        <Radio.Button value={item}>{item}</Radio.Button>
+                                                        <Radio.Button value={item} onClick={() => setCapacity(index)}>{item}</Radio.Button>
                                                     )
                                                 })
                                             }

@@ -10,9 +10,10 @@ const Bai2 = () => {
 
         //only string
         let newArrName = arrName.filter(function (e) {
-            return /^[A-Za-z]+$/.test(e); // test if the element is only letters
+            return /^[A-Za-zàáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ]+$/.test(e); // test if the element is only letters
         });
 
+        console.log(newArrName)
         if (newArrName.length > 1) {
             let arrTwoLast = newArrName.splice(-2)
             let tmp = [];

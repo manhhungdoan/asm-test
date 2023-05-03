@@ -1,12 +1,15 @@
-import { DownOutlined } from '@ant-design/icons';
-import { Tree } from 'antd';
+import { CarryOutOutlined, CheckOutlined, DownOutlined } from '@ant-design/icons';
+import { Select, Switch, Tree } from 'antd';
 import question from './question_answer.json'
 import _ from 'lodash'
 import { useState } from 'react';
 const Bai7 = () => {
     let data = question.question;
-    // console.log("data------", data)
-    // console.log('------------------------------------------------')
+
+    const [showLine, setShowLine] = useState(true);
+    const onSelect = (selectedKeys, info) => {
+        console.log('selected', selectedKeys, info);
+    };
 
     let newData = (_.chain(data)
         // Group the elements of Array based on `color` property
@@ -15,18 +18,12 @@ const Bai7 = () => {
         .map((value, key) => {
 
             let newChildrent = value.map((item) => {
-                // children.push(element)
-                // return {
-                //     key: element.id,
-                //     title: element.question,
-                //     children: element.answer,
-                // }
                 return {
-                    key: item.id,
+                    key: `${item.id}`,
                     title: item.question,
                     children: [
                         {
-                            key: item.id,
+                            key: `${item.id}`,
                             title: item.answer,
                             // children: [
                             //     {
@@ -38,7 +35,7 @@ const Bai7 = () => {
                 }
             });
             return {
-                key: key,
+                key: `${key}`,
                 children: newChildrent,
             }
         }
@@ -69,31 +66,41 @@ const Bai7 = () => {
 
     let treeData = catArr.map((itemCat) => {
         let catChildren = []
-        questionArr.map((itemQues) => {
+        questionArr.map((itemQues, index) => {
             if (itemCat.key == itemQues.key) {
-                catChildren.push(itemQues.children)
+                // console.log("ques", itemQues.children)
+                // console.log('-----------')
+                let x = itemQues.children.map((item, index) => {
+                    return {
+                        key: `${itemCat.key}-${item.key}`,
+                        title: item.title,
+                        // children: item.children
+                    }
+                })
+                // console.log('x>>', x)
+                catChildren = x;
             }
         })
         return {
             key: itemCat.key,
             title: itemCat.title,
-            children: catChildren[0]
+            children: catChildren
         }
     })
 
-    console.log("check treedata", treeData)
-    const onSelect = (selectedKeys, info) => {
-        console.log('selected', selectedKeys, info);
-    };
+    console.log(treeData)
     return (
         <>
-            <Tree
-                showLine
-                switcherIcon={<DownOutlined />}
-                defaultExpandedKeys={['0-0-0']}
-                onSelect={onSelect}
-                treeData={treeData}
-            />
+            <div>
+                <Tree
+                    showLine={
+                        showLine
+                    }
+                    defaultExpandedKeys={['6-13']}
+                    onSelect={onSelect}
+                    treeData={treeData}
+                />
+            </div>
         </>
     )
 }

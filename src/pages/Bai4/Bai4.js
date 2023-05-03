@@ -7,7 +7,9 @@ const Bai4 = () => {
     const [money, setMoney] = useState('')
     const handleProcess = () => {
         // let newValue = BigNumber(`${value}`)
-        setMoney(new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 20 }).format(+value))
+        let newValue = value.replaceAll(/\D/g, '')
+        console.log(newValue)
+        setMoney(new Intl.NumberFormat('en-US', { maximumSignificantDigits: 20 }).format(+newValue))
     }
 
 

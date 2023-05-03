@@ -1,46 +1,75 @@
-import { Avatar, Divider, Input, Space } from 'antd';
-import './Bai8.scss'
+import { Avatar, Button, Divider, Input, Space } from 'antd';
+import _, { set } from 'lodash'
 import data from './messages.json'
 import moment from 'moment'
 import { useEffect, useRef, useState } from 'react';
 import { FileImageTwoTone, PlusCircleOutlined, PlusCircleTwoTone, SendOutlined, UserOutlined } from '@ant-design/icons';
+import './Bai8.scss'
 
 const Bai8 = () => {
-    console.log(data.messages)
-    let arr = data.messages
 
+    const messages = data.messages;
+    const [backupTime, setBackupTime] = useState('');
+    let newMessages = messages.map((item) => {
+        return {
+            item,
+            show: ''
+        }
+    })
+    const newData = []
+    for (let i = 0; i < newMessages.length - 1; i++) {
+        if (moment(newMessages[i + 1].item.timestamp).diff(moment(newMessages[i].item.timestamp)) > 1800000) {
+            newMessages[i + 1].show = true
+        }
+
+    }
     const timeFormat = "HH:mm DD-MM-YYYY"
     return (
-        <div className='message-chat'>
+        <div className='message-chat' >
+            {/* <Button onClick={() => handleData()}>process</Button> */}
             <h1>message chat</h1>
             <Divider></Divider>
+            {
+                console.log('check', newMessages)
+            }
             <div className='conversation'>
                 {
-                    data?.messages?.map((message, index) => {
-                        if (message.from === "bob") {
+
+                    newMessages?.map((message, index) => {
+
+                        if (message.item.from === "bob") {
                             return (
                                 <div className='receiver'>
                                     <div className='receiver-avatar'>
                                         <Avatar icon={<UserOutlined />}></Avatar>
                                     </div>
                                     <div className='receiver-message-main'>
-                                        <div className='send-time'>
-                                            {/* {moment(message.timestamp[index + 1]).format(timeFormat)} */}
-                                            {message.timestamp}
-                                        </div>
+
+
                                         {
-                                            message.message && <div className='receiver-message'>
-                                                {message.message}
-                                            </div>
+                                            message.show === true ?
+                                                <div className='send-time'>
+                                                    {message.item.timestamp}
+                                                </div>
+                                                : ''
                                         }
+
+
+                                        <Space>
+                                            {
+                                                message.item.message && <div className='receiver-message'>
+                                                    {message.item.message}
+                                                </div>
+                                            }
+                                        </Space>
                                         {
-                                            message.attachments && message.attachments.length > 0 && message.attachments.length == 1 ? <div className='message-image'>
-                                                <img src={message.attachments[0].url} alt='' />
+                                            message.item.attachments && message.item.attachments.length > 0 && message.item.attachments.length == 1 ? <div className='message-image'>
+                                                <img src={message.item.attachments[0].url} alt='' />
                                             </div>
                                                 :
                                                 <div className='message-image-grid'>
                                                     {
-                                                        message.attachments.map((image, index) => {
+                                                        message.item.attachments.map((image, index) => {
                                                             return (
 
                                                                 <div className='item' key={index}>
@@ -59,23 +88,29 @@ const Bai8 = () => {
                         else {
                             return (
                                 <div className='sender'>
-                                    {console.log(message.timestamp)}
-                                    <div className='send-time'>
-                                        {moment(message.timestamp).format(timeFormat)}
-                                    </div>
                                     {
-                                        message.message && <div className='sender-message'>
-                                            {message.message}
+                                        message.show === true ?
+                                            <div className='send-time'>
+                                                {message.item.timestamp}
+                                            </div>
+                                            : ''
+                                    }
+
+
+                                    {
+                                        message.item.message && <div className='sender-message'>
+                                            {message.item.message}
                                         </div>
                                     }
+
                                     {
-                                        message.attachments && message.attachments.length > 0 && message.attachments.length == 1 ? <div className='message-image'>
-                                            <img src={message.attachments[0].url} alt='' />
+                                        message.item.attachments && message.item.attachments.length > 0 && message.item.attachments.length == 1 ? <div className='message-image'>
+                                            <img src={message.item.attachments[0].url} alt='' />
                                         </div>
                                             :
                                             <div className='message-image-grid'>
                                                 {
-                                                    message.attachments.map((image, index) => {
+                                                    message.item.attachments.map((image, index) => {
                                                         return (
 
                                                             <div className='item' key={index}>
@@ -94,7 +129,7 @@ const Bai8 = () => {
                 }
 
             </div>
-            <div className='input-message'>
+            <div className='input-message' >
                 <Space>
                     <FileImageTwoTone />
                     <PlusCircleTwoTone />
@@ -102,7 +137,10 @@ const Bai8 = () => {
                     <SendOutlined />
                 </Space>
             </div>
-        </div>
+        </div >
+        // <>
+        //     <Button onClick={() => handleData()}>process</Button>
+        // </>
     )
 }
 export default Bai8;

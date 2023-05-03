@@ -1,20 +1,37 @@
-import { Button, Space, Input } from "antd";
+import { Button, Space, Input, Divider } from "antd";
 import { useState } from "react";
 
 const Bai1 = () => {
-    const [value, setValue] = useState('')
-    const handleCheckNumber = () => {
-        while (value <= 20) {
+    const [value_1, setValue_1] = useState('')
+    const [value_2, setValue_2] = useState('')
+    const handleCheckNumber_1 = () => {
+        while (value_1 <= 20) {
             window.confirm('please enter n > 20');
             break;
         }
     }
+    const handleCheckNumber_2 = () => {
+        switch (true) {
+            case value_2 < 20:
+                window.confirm('please enter n > 20');
+                break;
+            default:
+                break
+        }
+    }
     return (
         <>
-            <div className="title">Bài 1</div>
+            <h1 className="title">Bài 1</h1>
             <Space>
-                <Input placeholder="enter n" onChange={(event) => setValue(event.target.value)}></Input>
-                <Button onClick={() => handleCheckNumber()}>Check</Button>
+                <div>Cách 1:</div>
+                <Input placeholder="enter n" onChange={(event) => setValue_1(event.target.value)}></Input>
+                <Button onClick={() => handleCheckNumber_1()}>Check</Button>
+            </Space>
+            <Divider></Divider>
+            <Space>
+                <div>Cách 2:</div>
+                <Input placeholder="enter n" onChange={(event) => setValue_2(event.target.value)}></Input>
+                <Button onClick={() => handleCheckNumber_2()}>Check</Button>
             </Space>
 
         </>
